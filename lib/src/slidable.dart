@@ -28,6 +28,7 @@ class Slidable extends StatefulWidget {
     this.dragStartBehavior = DragStartBehavior.down,
     this.useTextDirection = true,
     required this.child,
+    this.isSliding,
   }) : super(key: key);
 
   /// Whether this slidable is interactive.
@@ -36,6 +37,8 @@ class Slidable extends StatefulWidget {
   ///
   /// Defaults to true.
   final bool enabled;
+
+  final void Function(bool)? isSliding;
 
   /// Specifies to close this [Slidable] after the closest [Scrollable]'s
   /// position changed.
@@ -127,6 +130,7 @@ class _SlidableState extends State<Slidable>
   late final SlidableController controller;
   late Animation<Offset> moveAnimation;
   late bool keepPanesOrder;
+  bool isActiveSlide = false;
 
   @override
   bool get wantKeepAlive => !widget.closeOnScroll;
@@ -180,6 +184,10 @@ class _SlidableState extends State<Slidable>
   void handleActionPanelTypeChanged() {
     setState(() {
       updateMoveAnimation();
+      isActiveSlide = !isActiveSlide;
+      if (widget.isSliding != null) {
+        widget.isSliding!(isActiveSlide);
+      }
     });
   }
 
@@ -227,7 +235,6 @@ class _SlidableState extends State<Slidable>
   @override
   Widget build(BuildContext context) {
     super.build(context); // See AutomaticKeepAliveClientMixin.
-
     Widget content = SlideTransition(
       position: moveAnimation,
       child: SlidableAutoCloseBehaviorInteractor(

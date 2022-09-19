@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         body: ListView(
           children: [
             Slidable(
+              isSliding: (e) => print(e),
               // Specify a key if the Slidable is dismissible.
               key: const ValueKey(0),
 
