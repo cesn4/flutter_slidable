@@ -97,10 +97,10 @@ class CustomSlidableAction extends StatelessWidget {
         child: OutlinedButton(
           onPressed: () => _handleTap(context),
           style: OutlinedButton.styleFrom(
+            foregroundColor: effectiveForegroundColor,
             padding: padding,
             backgroundColor: backgroundColor,
-            primary: effectiveForegroundColor,
-            onSurface: effectiveForegroundColor,
+            disabledForegroundColor: effectiveForegroundColor.withOpacity(0.38),
             shape: RoundedRectangleBorder(
               borderRadius: borderRadius,
             ),
@@ -142,6 +142,7 @@ class SlidableAction extends StatelessWidget {
     this.label,
     this.borderRadius = BorderRadius.zero,
     this.padding,
+    this.textStyle,
   })  : assert(flex > 0),
         assert(icon != null || label != null),
         super(key: key);
@@ -154,6 +155,9 @@ class SlidableAction extends StatelessWidget {
 
   /// {@macro slidable.actions.foregroundColor}
   final Color? foregroundColor;
+
+  /// {@macro slidable.actions.textStyle}
+  final TextStyle? textStyle;
 
   /// {@macro slidable.actions.autoClose}
   final bool autoClose;
@@ -199,6 +203,7 @@ class SlidableAction extends StatelessWidget {
         Text(
           label!,
           overflow: TextOverflow.ellipsis,
+          style: textStyle,
         ),
       );
     }
